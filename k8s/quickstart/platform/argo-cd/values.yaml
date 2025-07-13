@@ -1,0 +1,16 @@
+# Values for ArgoCD Helm chart
+argo-cd:
+  server:
+    extraArgs:
+      - --insecure
+  configs:
+    params:
+      server.insecure: true
+    cm:
+      application.instanceLabelKey: argocd.argoproj.io/instance
+  dex:
+    enabled: true
+  repoServer:
+    extraArgs:
+      - --repo-cache-timeout
+      - 1m
