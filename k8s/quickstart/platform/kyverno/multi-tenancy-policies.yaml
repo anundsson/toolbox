@@ -1,0 +1,48 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-tenant-communication
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: check-namespace-label
+    match:
+      any:
+      - resources:
+          kinds:
+          - NetworkPolicy
+    validate:
+      message: "Network policies in tenant namespaces must restrict traffic"
+      pattern:
+        spec:
+          ingress:
+          - from:
+            - namespaceSelector:
+                matchLabels:
+                  tenant: "?{{request.object.metadata.labels.tenant}}"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-tenant-resource-quotas
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: require-resource-quotas
+    match:
+      any:
+      - resources:
+          kinds:
+          - Namespace
+    validate:
+      message: "Tenant namespaces must have resource quotas applied"
+      pattern:
+        metadata:
+          labels:
+            tenant: "*"
+      deny:
+        conditions:
+          all:
+          - key: "{{ request.object.metadata.labels.resource-quotas-applied }}"
+            operator: NotEquals
+            value: "true"

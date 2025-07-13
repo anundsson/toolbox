@@ -1,0 +1,105 @@
+# Default values for the multi-tenancy quickstart Helm chart
+# This is a values file for the umbrella chart
+
+# Component enablement flags
+components:
+  # ArgoCD
+  argocd:
+    enabled: true
+  
+  # Security components
+  kyverno:
+    enabled: true
+  gatekeeper:
+    enabled: false  # Disabled by default as it's an alternative to Kyverno
+  
+  # Secrets management
+  externalSecrets:
+    enabled: true
+  vault:
+    enabled: true
+  
+  # Certificate management
+  certManager:
+    enabled: true
+  
+  # Monitoring
+  monitoring:
+    enabled: true
+  
+  # Autoscaling
+  keda:
+    enabled: true
+  
+  # Service Mesh & Ingress
+  istio:
+    base:
+      enabled: true
+    istiod:
+      enabled: true
+    gateway:
+      enabled: true
+
+# ArgoCD Settings
+argo-cd:
+  server:
+    replicas: 2
+  repoServer:
+    replicas: 2
+  applicationSet:
+    enabled: true
+  
+# Kyverno Settings
+kyverno:
+  replicaCount: 2
+  validationFailureAction: Audit
+  
+# External Secrets Operator Settings
+external-secrets:
+  webhook:
+    create: true
+  replicaCount: 2
+  
+# Vault Settings
+vault:
+  server:
+    ha:
+      enabled: true
+      replicas: 3
+    
+# Cert Manager Settings
+cert-manager:
+  installCRDs: true
+  replicaCount: 2
+  
+# Monitoring Stack Settings
+kube-prometheus-stack:
+  prometheus:
+    prometheusSpec:
+      replicas: 2
+  grafana:
+    enabled: true
+    
+# KEDA Settings
+keda:
+  operator:
+    replicaCount: 2
+    
+# Istio Settings
+istio-base:
+  # Base configuration
+  global:
+    istioNamespace: istio-system
+
+istiod:
+  pilot:
+    replicaCount: 2
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+    
+gateway:
+  replicaCount: 2
+  service:
+    type: LoadBalancer

@@ -1,0 +1,45 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: tenant-isolation
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      app: istiod
+  action: ALLOW
+  rules:
+  - when:
+    - key: request.namespace
+      values: ["tenant-a"]
+    to:
+    - operation:
+        paths: ["/*"]
+      operation:
+        methods: ["*"]
+    from:
+    - source:
+        namespaces: ["tenant-a", "istio-system"]
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: tenant-b-isolation
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      app: istiod
+  action: ALLOW
+  rules:
+  - when:
+    - key: request.namespace
+      values: ["tenant-b"]
+    to:
+    - operation:
+        paths: ["/*"]
+      operation:
+        methods: ["*"]
+    from:
+    - source:
+        namespaces: ["tenant-b", "istio-system"]

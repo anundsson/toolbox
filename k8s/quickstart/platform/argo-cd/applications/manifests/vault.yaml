@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://helm.releases.hashicorp.com
+    chart: vault
+    targetRevision: 0.26.0
+    helm:
+      values: |
+        server:
+          ha:
+            enabled: true
+            replicas: 3
+            raft:
+              enabled: true
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 250m
+            limits:
+              memory: 512Mi
+              cpu: 500m
+          
+          # Configure audit logging
+          auditStorage:
+            enabled: true
+            size: 10Gi
+          
+          dataStorage:
+            enabled: true
+            size: 10Gi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vault
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

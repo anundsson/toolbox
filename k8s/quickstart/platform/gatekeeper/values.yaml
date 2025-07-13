@@ -1,0 +1,55 @@
+replicas: 3
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+  requests:
+    cpu: 500m
+    memory: 256Mi
+
+audit:
+  enabled: true
+  replicas: 1
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 250m
+      memory: 128Mi
+
+controllerManager:
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 512Mi
+    requests:
+      cpu: 500m
+      memory: 256Mi
+
+pdb:
+  controllerManager:
+    minAvailable: 1
+
+violations:
+  allowedCapabilities:
+    enforced: true
+  requiredProbes:
+    enforced: true
+  restrictedVolumes:
+    enforced: true
+  requiredLabels:
+    enforced: true
+    parameters:
+      labels:
+      - app
+      - tenant
+      - environment
+
+mutatingWebhook:
+  enabled: true
+
+postInstall:
+  labelNamespace:
+    enabled: true

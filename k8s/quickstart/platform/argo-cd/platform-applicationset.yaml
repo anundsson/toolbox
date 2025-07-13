@@ -1,0 +1,62 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: platform-components
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - name: kyverno
+        path: k8s/quickstart/platform/kyverno
+        namespace: kyverno
+      - name: gatekeeper
+        path: k8s/quickstart/platform/gatekeeper
+        namespace: gatekeeper-system
+        optional: true
+      - name: external-secrets
+        path: k8s/quickstart/platform/external-secrets
+        namespace: external-secrets
+      - name: vault
+        path: k8s/quickstart/platform/vault
+        namespace: vault
+      - name: cert-manager
+        path: k8s/quickstart/platform/cert-manager
+        namespace: cert-manager
+      - name: kube-prometheus-stack
+        path: k8s/quickstart/platform/kube-prometheus-stack
+        namespace: monitoring
+      - name: keda
+        path: k8s/quickstart/platform/keda
+        namespace: keda
+      - name: istio
+        path: k8s/quickstart/platform/istio
+        namespace: istio-system
+  template:
+    metadata:
+      name: '{{name}}'
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/anundsson/toolbox.git
+        targetRevision: main
+        path: '{{path}}'
+        helm:
+          valueFiles:
+            - values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+        retry:
+          limit: 5
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 3m

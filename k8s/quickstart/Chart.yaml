@@ -1,0 +1,61 @@
+apiVersion: v2
+name: k8s-multi-tenancy-quickstart
+description: A Helm chart for deploying a multi-tenancy Kubernetes cluster with essential tools
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+maintainers:
+  - name: Your Organization
+    email: admin@example.com
+keywords:
+  - kubernetes
+  - multi-tenancy
+  - gitops
+  - security
+  - service-mesh
+dependencies:
+  # Platform components using actual application names
+  - name: argo-cd
+    version: "~5.46.0"
+    repository: https://argoproj.github.io/argo-helm
+    condition: components.argocd.enabled
+  - name: kyverno
+    version: "~3.1.0"
+    repository: https://kyverno.github.io/kyverno/
+    condition: components.kyverno.enabled
+  - name: gatekeeper
+    version: "~3.15.0"
+    repository: https://open-policy-agent.github.io/gatekeeper/charts
+    condition: components.gatekeeper.enabled
+  - name: external-secrets
+    version: "~0.9.0"
+    repository: https://charts.external-secrets.io
+    condition: components.externalSecrets.enabled
+  - name: vault
+    version: "~0.26.0"
+    repository: https://helm.releases.hashicorp.com
+    condition: components.vault.enabled
+  - name: cert-manager
+    version: "~1.14.0"
+    repository: https://charts.jetstack.io
+    condition: components.certManager.enabled
+  - name: kube-prometheus-stack
+    version: "~55.0.0"
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: components.monitoring.enabled
+  - name: keda
+    version: "~2.12.0"
+    repository: https://kedacore.github.io/charts
+    condition: components.keda.enabled
+  - name: istio-base
+    version: "~1.20.0"
+    repository: https://istio-release.storage.googleapis.com/charts
+    condition: components.istio.base.enabled
+  - name: istiod
+    version: "~1.20.0"
+    repository: https://istio-release.storage.googleapis.com/charts
+    condition: components.istio.istiod.enabled
+  - name: gateway
+    version: "~1.20.0"
+    repository: https://istio-release.storage.googleapis.com/charts
+    condition: components.istio.gateway.enabled

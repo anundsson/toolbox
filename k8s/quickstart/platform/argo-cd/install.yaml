@@ -1,0 +1,13 @@
+# ArgoCD Install Manifest
+
+This is the official ArgoCD installation manifest. For the latest version, see:
+https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+You can apply this manifest with:
+
+```
+kubectl apply -n argocd -f install.yaml
+```
+
+---
+# (Below is a placeholder. For production, download the latest manifest from ArgoCD)

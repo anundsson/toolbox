@@ -1,0 +1,48 @@
+# Values for External Secrets Operator
+
+# Webhook for validating requests
+webhook:
+  create: true
+
+# Certificate controller for managing certificates
+certController:
+  create: true
+
+# High-availability configuration
+replicaCount: 2
+leaderElect:
+  enabled: true
+
+# Resources
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# Monitoring
+serviceMonitor:
+  enabled: true
+
+# Pod security
+securityContext:
+  enabled: true
+  runAsNonRoot: true
+  fsGroup: 1000
+  runAsUser: 1000
+
+# Reconciliation settings
+reconcileInterval: 1m
+
+# Support for External Secret stores
+extraSecretStores:
+  aws:
+    enabled: false
+  gcp:
+    enabled: false
+  azure:
+    enabled: false
+  vault:
+    enabled: true

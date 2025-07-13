@@ -1,0 +1,43 @@
+server:
+  ha:
+    enabled: true
+    replicas: 3
+    raft:
+      enabled: true
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+    limits:
+      memory: 512Mi
+      cpu: 500m
+  
+  # Configure audit logging
+  auditStorage:
+    enabled: true
+    size: 10Gi
+  
+  dataStorage:
+    enabled: true
+    size: 10Gi
+  
+  serviceAccount:
+    create: true
+    name: "vault"
+
+# Configure Vault UI
+ui:
+  enabled: true
+  serviceType: "ClusterIP"
+
+# Configure injector for Vault Agent Injection
+injector:
+  enabled: true
+  replicas: 2
+  resources:
+    requests:
+      memory: 128Mi
+      cpu: 100m
+    limits:
+      memory: 256Mi
+      cpu: 250m

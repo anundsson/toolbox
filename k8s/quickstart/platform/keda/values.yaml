@@ -1,0 +1,37 @@
+operator:
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+metricsServer:
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+serviceMonitor:
+  enabled: true
+
+prometheus:
+  metricServer:
+    enabled: true
+  operator:
+    enabled: true
+
+podSecurityContext:
+  enabled: true
+
+logging:
+  operator:
+    level: info
+  metricServer:
+    level: info

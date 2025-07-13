@@ -1,0 +1,10 @@
+apiVersion: v2
+name: argo-cd
+description: ArgoCD for GitOps deployments
+type: application
+version: 0.1.0
+appVersion: "2.10.x"
+dependencies:
+  - name: argo-cd
+    version: "~5.46.0"
+    repository: https://argoproj.github.io/argo-helm

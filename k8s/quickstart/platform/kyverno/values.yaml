@@ -1,0 +1,32 @@
+# Default values for the multi-tenancy kyverno policies
+# These are example policies for enabling multi-tenancy isolation
+generateNetworkPolicy: true
+blockNodePort: true
+requireResourceQuotas: true
+enforceNamespaceLabels: true
+
+# Tenant Isolation
+tenantIsolation:
+  enabled: true
+  # Default system namespaces that should not be affected by tenant isolation
+  systemNamespaces:
+    - kube-system
+    - kube-public
+    - kube-node-lease
+    - argocd
+    - external-secrets
+    - kyverno
+    - monitoring
+    - ingress-nginx
+    - cert-manager
+
+# Resource Quotas for tenants (default values)
+resourceQuotas:
+  defaultTenantQuota:
+    cpu: 8
+    memory: 16Gi
+    pods: 20
+    services: 10
+    configmaps: 30
+    secrets: 30
+    persistentvolumeclaims: 10
